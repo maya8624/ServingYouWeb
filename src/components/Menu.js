@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
-import Modal from "./Modal";
+import React from "react";
+import { Link } from "react-router-dom";
+import useOrder from "./hooks/useOrder";
 
 function Menu({ menus }) {
-  const [open, setOpen] = useState(false);
+  const order = useOrder();
 
-  const [menu, setMenu] = useState(() => {
-    console.log("value set");
-  });
+  const addToCart = (menu) => {
+    const item = {
+      id: menu.id,
+      name: menu.name,
+      price: menu.price,
+      quantity: 1,
+      imageUrl: menu.image.url,
+    };
 
-  useEffect(() => {}, []);
+    order.addToCart(item);
+  };
 
   return (
     <>
@@ -16,32 +23,30 @@ function Menu({ menus }) {
         <div className="row my-5">
           {menus.map((menu) => {
             return (
-              <div
-                key={menu.id}
-                onClick={() => setMenu(menu)}
-                className="col-md-3 my-3 text-center"
-              >
+              <div key={menu.id} className="col-md-3 my-3 text-center">
                 <img src={menu.image.url} alt={menu.name} className="w-100" />
                 <h4 className="my-4">{menu.name}</h4>
                 <p className="m-description">
                   {menu.description.slice(0, 60)}......
                 </p>
-                <a href="#" className="btn btn-outline-dark btn-md">
-                  View
-                </a>
-                <a
-                  href="#"
+                <input
+                  type="button"
+                  value="Add"
                   className="btn btn-outline-dark btn m-1"
-                  onClick={() => setOpen(true)}
+                  onClick={() => addToCart(menu)}
+                />
+                <Link
+                  to="/MenuDetails"
+                  className="btn btn-outline-dark btn m-1"
                 >
-                  Order
-                </a>
+                  View
+                </Link>
               </div>
             );
           })}
         </div>
       </div>
-      <Modal menu={menu} qty={0} open={open} onClose={() => setOpen(false)} />
+      {/* <Modal menu={menu} qty={0} open={open} onClose={() => setOpen(false)} /> */}
     </>
   );
 }

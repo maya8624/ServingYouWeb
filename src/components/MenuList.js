@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Menu from "./Menu";
-import sushi from "../images/sushi2.jpg";
 import { getAllMenu } from "../services/menuServices";
 
 function MenuList(props) {
   const [menus, setMenus] = useState(() => getAllMenu());
-
   // if (menus.length === 0) {
   //   return (
   //     <div>

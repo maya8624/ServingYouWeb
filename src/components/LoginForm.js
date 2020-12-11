@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import FormInput from "./common/FormInput";
 import validate from "../utils/validate";
+import authService from "../services/authService";
+import useAuth from "./hooks/useAuth";
+
 import Joi from "joi";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import wave from "../images/wave.svg";
 import foodTruck from "../images/foodTruck.svg";
 import account from "../images/account.svg";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
-function LoginForm2(props) {
+function LoginForm(props) {
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -68,9 +71,31 @@ function LoginForm2(props) {
     doSubmit();
   };
 
+  // const logIn = (authToken) => {
+  //   const user = authToken; //jwtDecode(authToken);
+  //   setUser(user);
+  //   authService.storeToken(authToken);
+  // };
+
   const doSubmit = () => {
     try {
-      console.log(data);
+      const result = authService.logIn(data.email, data.password);
+
+      if (!result) return setLoginFailed(true);
+      setLoginFailed(false);
+
+      // store user info in to local storage
+
+      auth.logIn(result.email + "jwt123"); // jwt token
+
+      // console.log(props);
+
+      // const { state } = props.location;
+      // window.location = state ? state.from.pathname : "/";
+
+      window.location = "/";
+
+      console.log("result", result);
     } catch (ex) {
       console.log(ex);
     }
@@ -78,9 +103,11 @@ function LoginForm2(props) {
 
   const defaultStyle = "form-input-div";
   const focusStyle = "form-input-div focus";
-
+  // const { user, setUser } = useContext(AuthContext);
+  const auth = useAuth();
   const [emailStyle, setEmailStyle] = useState(defaultStyle);
   const [passwordStyle, setPasswordStyle] = useState(defaultStyle);
+  const [loginFailed, setLoginFailed] = useState(false);
 
   return (
     <>
@@ -99,7 +126,7 @@ function LoginForm2(props) {
               icon={faEnvelope}
               type="text"
               style={emailStyle}
-              value={data["email"]}
+              value={data.email}
               error={error["email"]}
               onChange={handleChange}
               onFocus={() => setEmailStyle(focusStyle)}
@@ -125,9 +152,10 @@ function LoginForm2(props) {
             <a href="#">Forgot Password?</a>
           </form>
         </div>
+        {loginFailed && <h2>email or password is not correct</h2>}
       </div>
     </>
   );
 }
 
-export default LoginForm2;
+export default LoginForm;
