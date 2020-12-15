@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useOrder from "./hooks/useOrder";
+import { useOrder } from "../components/hooks/useOrder";
 
 function Menu({ menus }) {
   const order = useOrder();

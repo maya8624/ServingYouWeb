@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import OrderContext from "../context/orderContext";
+import { useOrder } from "./hooks/useOrder";
+import orderService from "../services/orderService";
 
 function ShoppingCart() {
-  const useOrder = useContext(OrderContext);
-  const totalItems = useOrder.items.length;
+  // const context = useContext(OrderContext);  ;
+  const order = useOrder();
+  const totalItems = order.items.length;
 
-  // console.log("shopping cart:", totalItems);
-
-  //if (totalItems === 0) return null;
+  if (totalItems === 0) return null;
 
   return (
     <div>

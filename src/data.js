@@ -11,7 +11,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 20,
     image: {
       url: sushi,
     },
@@ -23,7 +23,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 25,
     image: {
       url: sushi,
     },
@@ -35,7 +35,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 30,
     image: {
       url: sushi,
     },
@@ -47,7 +47,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 17,
     image: {
       url: ramen1,
     },
@@ -59,7 +59,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 19,
     image: {
       url: ramen2,
     },
@@ -71,7 +71,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 18,
     image: {
       url: ramen2,
     },
@@ -83,7 +83,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 26,
     image: {
       url: mussels,
     },
@@ -95,7 +95,7 @@ const menus = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
     category: 1,
-    price: 100,
+    price: 30,
     image: {
       url: mussels,
     },

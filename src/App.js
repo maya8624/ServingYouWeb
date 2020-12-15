@@ -13,12 +13,11 @@ import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import RegisterForm from "./components/RegisterForm";
 import AuthContext from "./context/authContext";
-import OrderContext from "./context/orderContext";
 import authService from "./services/authService";
+import OrderProvider from "./context/OrderContext";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const user = authService.getUser();
@@ -27,7 +26,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      <OrderContext.Provider value={{ items, setItems }}>
+      <OrderProvider>
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home}></Route>
@@ -40,7 +39,7 @@ function App() {
           <Route path="/logout" component={Logout}></Route>
           <Route component={Error}></Route>
         </Switch>
-      </OrderContext.Provider>
+      </OrderProvider>
     </AuthContext.Provider>
   );
 }

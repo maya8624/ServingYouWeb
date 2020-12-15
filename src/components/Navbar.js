@@ -7,14 +7,14 @@ import ShoppingCart from "./ShoppingCart";
 function Navbar(props) {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  
+
   const handleToggle = () => {
     setOpen(open ? false : true);
   };
-  // in useEffect?
+  // in useEffect ?
   // useEffect(() => {
   //   handleToggle();
-  // }, []);
+  // }, []); <= puth sth change thing
 
   return (
     <nav className="navbar bg-light navbar-light navbar-expand-lg">

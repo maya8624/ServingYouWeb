@@ -1,20 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlusSquare,
-  faMinusSquare,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-
-import useOrder from "./hooks/useOrder";
+import orderService from "../services/orderService";
+import { useOrder } from "./hooks/useOrder";
 
 function Order() {
   const order = useOrder();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const items = order.getCartItems();
-    console.log(items);
+    const items = orderService.getOrderItems();
     setItems(items);
   }, []);
 
@@ -23,10 +18,18 @@ function Order() {
     setItems(newItems);
   };
 
+  const formatPrice = (price) => {
+    return `$${price.toFixed(2)}`;
+  };
+
   const removeFromCart = (id) => {
     const updatedItems = order.removeFromCart(id);
     setItems(updatedItems);
   };
+
+  function totalPrice(items) {
+    return items.reduce((acc, item) => acc + item.quantity * item.price, 0.0);
+  }
 
   if (items.length === 0) return <span>Some Shopping</span>;
   // if (!user) window.location = "/";
@@ -59,7 +62,7 @@ function Order() {
                   />
                 </td>
                 <td>{item.name}</td>
-                <td>{item.price}</td>
+                <td>{formatPrice(item.price)}</td>
                 <td>
                   <button
                     type="button"
@@ -78,7 +81,7 @@ function Order() {
                     -
                   </button>
                 </td>
-                <td></td>
+                <td>{formatPrice(item.quantity * item.price)}</td>
                 <td>
                   <FontAwesomeIcon
                     icon={faTrashAlt}
@@ -96,7 +99,7 @@ function Order() {
               Cart Totals
             </th>
             <td>Qty: </td>
-            <td>Total</td>
+            <td>Total: {formatPrice(totalPrice(items))}</td>
             <td></td>
             <td></td>
           </tr>
