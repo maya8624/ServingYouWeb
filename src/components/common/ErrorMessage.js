@@ -1,5 +1,7 @@
 const ErrorMessage = ({ error }) => {
-  return <div className="alert alert-danger">{error}</div>;
+  console.log();
+  if (!error) return null;
+  return <div className="val-error">{error}</div>;
 };
 
 export default ErrorMessage;

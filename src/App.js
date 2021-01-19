@@ -1,18 +1,21 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import Navbar from "./components/Navbar";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import About from "./pages/About";
-import Error from "./pages/Error";
+import AuthContext from "./context/authContext";
+import Booking from "./components/Booking";
+import Checkout from "./components/Checkout";
 import Home from "./pages/Home";
-import Order from "./components/Order";
-import MenuList from "./components/MenuList";
-import BookingForm from "./components/BookingForm";
+import MenuDetails from "./components/MenuDetails";
+import Menus from "./components/Menus";
+import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
+import NotFound from "./components/NotFound";
+import Order from "./components/Order";
 import RegisterForm from "./components/RegisterForm";
-import AuthContext from "./context/authContext";
+
 import authService from "./services/authService";
 import OrderProvider from "./context/OrderContext";
 
@@ -27,17 +30,20 @@ function App() {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <OrderProvider>
-        <Navbar />
+        <NavBar />
         <Switch>
-          <Route exact path="/" component={Home}></Route>
+          <Route path="/menuDetails/:id" component={MenuDetails} />
+          <Route path="/checkout" component={Checkout} />
           <Route path="/about" component={About} />
-          <Route exact path="/menuList" component={MenuList}></Route>
+          <Route path="/menuList" component={Menus}></Route>
           <Route path="/order" component={Order}></Route>
-          <Route path="/booking" component={BookingForm}></Route>
+          <Route path="/booking" component={Booking}></Route>
           <Route path="/login" component={LoginForm}></Route>
           <Route path="/register" component={RegisterForm}></Route>
           <Route path="/logout" component={Logout}></Route>
-          <Route component={Error}></Route>
+          <Route path="/not-found" component={NotFound} />
+          <Route path="/" exact component={Home}></Route>
+          <Redirect to="/not-found" />
         </Switch>
       </OrderProvider>
     </AuthContext.Provider>

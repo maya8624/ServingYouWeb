@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import FormInput from "./common/FormInput";
+import Joi from "joi";
 import validate from "../utils/validate";
-import wave from "../images/rwave.svg";
 import foodTruck from "../images/foodTruck.svg";
-import register from "../images/register.svg";
+import FormInput from "./common/FormInput";
+
 import {
   faLock,
   faMobile,
   faEnvelope,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import Joi from "joi";
 
 function RegisterForm(props) {
   const [data, setData] = useState({
@@ -28,15 +27,6 @@ function RegisterForm(props) {
     email: "",
     password: "",
   });
-
-  const defaultStyle = "form-input-div";
-  const focusStyle = "form-input-div focus";
-
-  const [firstNameStyle, setFirstNameStyle] = useState(defaultStyle);
-  const [lastNameStyle, setLastNameStyle] = useState(defaultStyle);
-  const [mobileStyle, setMobileStyle] = useState(defaultStyle);
-  const [emailStyle, setEmailStyle] = useState(defaultStyle);
-  const [passwordStyle, setPasswordStyle] = useState(defaultStyle);
 
   const schema = {
     firstname: Joi.string().required().label("Firstname"),
@@ -100,90 +90,60 @@ function RegisterForm(props) {
   };
 
   return (
-    <>
-      <img src={wave} alt="" className="form-wave" />
-      <div className="form-container">
-        <div className="form-img">
-          <img src={register} alt="" />
-        </div>
-        <div className="form-login-container">
-          <form className="form" onSubmit={handleSubmit}>
-            <img className="form-foodTruck" src={foodTruck} alt="" />
-            <FormInput
-              name="firstname"
-              title="First Name"
-              icon={faUser}
-              type="text"
-              style={firstNameStyle}
-              value={data["firstname"]}
-              error={errors["firstname"]}
-              onChange={handleChange}
-              onFocus={() => setFirstNameStyle(focusStyle)}
-              onBlur={() =>
-                setFirstNameStyle(data["firstname"] ? focusStyle : defaultStyle)
-              }
-            />
-            <FormInput
-              name="lastname"
-              title="Last Name"
-              icon={faUser}
-              type="text"
-              style={lastNameStyle}
-              value={data["lastname"]}
-              error={errors["lastname"]}
-              onChange={handleChange}
-              onFocus={() => setLastNameStyle(focusStyle)}
-              onBlur={() =>
-                setLastNameStyle(data["lastname"] ? focusStyle : defaultStyle)
-              }
-            />
-            <FormInput
-              name="mobile"
-              title="Mobile"
-              icon={faMobile}
-              type="text"
-              style={mobileStyle}
-              value={data["mobile"]}
-              error={errors["mobile"]}
-              onChange={handleChange}
-              onFocus={() => setMobileStyle(focusStyle)}
-              onBlur={() =>
-                setMobileStyle(data["mobile"] ? focusStyle : defaultStyle)
-              }
-            />
-            <FormInput
-              name="email"
-              title="Email"
-              icon={faEnvelope}
-              type="text"
-              style={emailStyle}
-              value={data["email"]}
-              error={errors["email"]}
-              onChange={handleChange}
-              onFocus={() => setEmailStyle(focusStyle)}
-              onBlur={() =>
-                setEmailStyle(data["email"] ? focusStyle : defaultStyle)
-              }
-            />
-            <FormInput
-              name="password"
-              title="Password"
-              icon={faLock}
-              type="password"
-              style={passwordStyle}
-              value={data["password"]}
-              error={errors["password"]}
-              onChange={handleChange}
-              onFocus={() => setPasswordStyle(focusStyle)}
-              onBlur={() =>
-                setPasswordStyle(data["password"] ? focusStyle : defaultStyle)
-              }
-            />
-            <input type="submit" className="form-btn" value="Register" />
-          </form>
-        </div>
+    <div className="val-login-container">
+      <div className="val-div">
+        <form className="val-form" onSubmit={handleSubmit}>
+          <img className="form-foodTruck" src={foodTruck} alt="" />
+          <h2>Register</h2>
+          <FormInput
+            error={errors.firstname}
+            icon={faUser}
+            onChange={handleChange}
+            name="firstname"
+            title="First Name"
+            type="text"
+            value={data.firstname}
+          />
+          <FormInput
+            error={errors.lastname}
+            icon={faUser}
+            name="lastname"
+            onChange={handleChange}
+            title="Last Name"
+            type="text"
+            value={data.lastname}
+          />
+          <FormInput
+            error={errors.mobile}
+            icon={faMobile}
+            name="mobile"
+            onChange={handleChange}
+            title="Mobile"
+            type="text"
+            value={data.mobile}
+          />
+          <FormInput
+            error={errors.email}
+            icon={faEnvelope}
+            name="email"
+            onChange={handleChange}
+            title="Email"
+            type="text"
+            value={data.email}
+          />
+          <FormInput
+            error={errors.password}
+            icon={faLock}
+            name="password"
+            onChange={handleChange}
+            title="Password"
+            type="password"
+            value={data.password}
+          />
+          <input type="submit" className="val-btn" value="Register" />
+        </form>
       </div>
-    </>
+    </div>
   );
 }
 

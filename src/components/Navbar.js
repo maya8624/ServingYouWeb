@@ -1,23 +1,24 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+
 import logo from "../images/logo.png";
 import AuthContext from "../context/authContext";
-import ShoppingCart from "./ShoppingCart";
+import OrderInfo from "./OrderInfo";
 
-function Navbar(props) {
+function NavBar(props) {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
 
-  const handleToggle = () => {
-    setOpen(open ? false : true);
-  };
+  // const handleToggle = () => {
+  //   setOpen(open ? false : true);
+  // };
   // in useEffect ?
   // useEffect(() => {
   //   handleToggle();
   // }, []); <= puth sth change thing
 
   return (
-    <nav className="navbar bg-light navbar-light navbar-expand-lg">
+    <nav className="navbar bg-light navbar-light navbar-expand-lg sticky-top">
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img src={logo} alt="Serving You" />
@@ -76,22 +77,17 @@ function Navbar(props) {
               </>
             )}
             {user && (
-              <>
-                <li className="nav-item">
-                  <Link to="/order" className="nav-link">
-                    My Order
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/logout" className="nav-link">
-                    Logout
-                  </Link>
-                </li>
-                <li>
-                  <ShoppingCart />
-                </li>
-              </>
+              <li className="nav-item">
+                <Link to="/logout" className="nav-link">
+                  Logout
+                </Link>
+              </li>
             )}
+            <li className="cart-icon">
+              <Link to="/order" className="nav-link">
+                <OrderInfo />
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -99,4 +95,4 @@ function Navbar(props) {
   );
 }
 
-export default Navbar;
+export default NavBar;

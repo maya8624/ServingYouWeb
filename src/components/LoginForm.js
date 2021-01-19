@@ -100,61 +100,41 @@ function LoginForm(props) {
       console.log(ex);
     }
   };
-
-  const defaultStyle = "form-input-div";
-  const focusStyle = "form-input-div focus";
-  // const { user, setUser } = useContext(AuthContext);
   const auth = useAuth();
-  const [emailStyle, setEmailStyle] = useState(defaultStyle);
-  const [passwordStyle, setPasswordStyle] = useState(defaultStyle);
   const [loginFailed, setLoginFailed] = useState(false);
 
   return (
-    <>
-      <img src={wave} alt="" className="form-wave" />
-      <div className="form-container">
-        <div className="form-img">
-          <img src={account} alt="" />
-        </div>
-        <div className="form-login-container">
-          <form className="form" onSubmit={handleSubmit}>
-            <img className="form-foodTruck" src={foodTruck} alt="" />
-            <h2>Log-in</h2>
-            <FormInput
-              name="email"
-              title="Email"
-              icon={faEnvelope}
-              type="text"
-              style={emailStyle}
-              value={data.email}
-              error={error["email"]}
-              onChange={handleChange}
-              onFocus={() => setEmailStyle(focusStyle)}
-              onBlur={() =>
-                setEmailStyle(data["email"] ? focusStyle : defaultStyle)
-              }
-            />
-            <FormInput
-              name="password"
-              title="Password"
-              icon={faLock}
-              type="password"
-              style={passwordStyle}
-              value={data["password"]}
-              error={error["password"]}
-              onChange={handleChange}
-              onFocus={() => setPasswordStyle(focusStyle)}
-              onBlur={() =>
-                setPasswordStyle(data["password"] ? focusStyle : defaultStyle)
-              }
-            />
-            <input type="submit" className="form-btn" value="Login" />
-            <a href="#">Forgot Password?</a>
-          </form>
-        </div>
+    // <img src={wave} alt="" className="form-wave" />
+    <div className="val-login-container">
+      <div className="val-div">
+        <form className="val-form" onSubmit={handleSubmit}>
+          <img className="form-foodTruck" src={foodTruck} alt="" />
+          <h2>Log-in</h2>
+          <FormInput
+            name="email"
+            error={error.email}
+            icon={faEnvelope}
+            onChange={handleChange}
+            title="Email"
+            type="text"
+            value={data.email}
+          />
+          <FormInput
+            name="password"
+            error={error.password}
+            icon={faLock}
+            onChange={handleChange}
+            title="Password"
+            type="password"
+            value={data.password}
+          />
+          <input type="submit" className="val-btn" value="Login" />
+          <a href="#">Forgot Password?</a>
+        </form>
+
         {loginFailed && <h2>email or password is not correct</h2>}
       </div>
-    </>
+    </div>
   );
 }
 

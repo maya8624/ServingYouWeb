@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
+import { useOrder } from "./hooks/useOrder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { useOrder } from "./hooks/useOrder";
-import orderService from "../services/orderService";
 
-function ShoppingCart() {
-  // const context = useContext(OrderContext);  ;
+function OrderInfo() {
   const order = useOrder();
   const totalItems = order.items.length;
 
@@ -18,4 +16,4 @@ function ShoppingCart() {
   );
 }
 
-export default ShoppingCart;
+export default OrderInfo;

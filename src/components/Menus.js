@@ -6,7 +6,7 @@ import { getMenus } from "../services/menuService";
 import Input from "./common/Input";
 import Select from "./common/Select";
 
-function MenuList(props) {
+function Menus(props) {
   const [menus, setMenus] = useState([]);
   const [filteredMenus, setFilteredMenus] = useState([]);
   const [price, setPrice] = useState(0);
@@ -120,33 +120,34 @@ function MenuList(props) {
         </div>
       </section>
 
-      <div className="row my-5">
+      <div className="section-center">
         {filteredMenus.map((menu) => {
           return (
-            <div key={menu.id} className="col-md-6 my-3 text-center">
-              <div className="menu-container">
-                <img src={menu.image.url} alt={menu.name} className="w-100" />
-                <div>
-                  <h4 className="my-4">{menu.name}</h4>
-                  <p className="m-description">
-                    {menu.description.slice(0, 60)}......
-                  </p>
-                  <input
-                    type="button"
-                    value="Add"
-                    className="btn btn-outline-dark btn m-1"
-                    onClick={() => addToCart(menu)}
-                  />
+            <article key={menu.id} className="menu-item">
+              <img src={menu.image.url} alt={menu.name} className="photo" />
+              <div className="item-info">
+                <header>
+                  <h4>{menu.name}</h4>
+                  <h4 className="price">$ {menu.price}</h4>
+                </header>
+                <p className="item-text">
+                  {menu.description.slice(0, 60)}......
+                </p>
+                <input
+                  type="button"
+                  value="Add"
+                  className="btn btn-outline-dark btn m-1"
+                  onClick={() => addToCart(menu)}
+                />
 
-                  <Link
-                    to={`/menuDetails/${menu.id}`}
-                    className="btn btn-outline-dark btn m-1"
-                  >
-                    View
-                  </Link>
-                </div>
+                <Link
+                  to={`/menuDetails/${menu.id}`}
+                  className="btn btn-outline-dark btn m-1"
+                >
+                  View
+                </Link>
               </div>
-            </div>
+            </article>
           );
         })}
       </div>
@@ -154,4 +155,4 @@ function MenuList(props) {
   );
 }
 
-export default MenuList;
+export default Menus;

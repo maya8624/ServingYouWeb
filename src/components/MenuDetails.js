@@ -1,47 +1,59 @@
-import React from "react";
-import img from "../images/sushi1.jpg";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getMenu } from "../services/menuService";
+import { useOrder } from "../components/hooks/useOrder";
 
-function MenuDetails({ menu }) {
+function MenuDetails(props) {
+  //const [menu, setMenu] = useState([]);
+  const order = useOrder();
+
+  const id = props.match.params.id;
+  const menu = getMenu(parseInt(id));
+
+  const addToCart = (menu) => {
+    const item = {
+      id: menu.id,
+      name: menu.name,
+      price: menu.price,
+      quantity: 1,
+      imageUrl: menu.image.url,
+    };
+
+    order.addToCart(item);
+  };
+
+  // useEffect(() => {
+  //   setMenu(getMenu(parseInt(id)));
+  // }, [id]);
+
   return (
-    <div className="container">
-      <div className="row py-4">
-        <div className="col-lg-4 mb-4 my-lg-auto">
-          <h1 className="text-dark font-weight-bold mb-3">Tempura</h1>
-          <p className="mb-4">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </p>
+    <section className="menu-details-container">
+      <div className="menu-details-image">
+        <img src={menu.image.url} alt={menu.id} />
+      </div>
+      <div className="menu-info-container">
+        <div className="menu-details-desc">
+          <h3>Description</h3>
+          <p>{menu.description}</p>
         </div>
-        <div className="col-lg-8">
-          <img src={img} className="w-75" />
+        <div className="menu-details-info">
+          <h3>Info</h3>
+          <h6>Name: {menu.name}</h6>
+          <h6>Price: ${menu.price}</h6>
+          <h6>Category:Italian</h6>
+        </div>
+        <div className="menu-details-buttons">
+          <input
+            type="button"
+            value="Add To Cart"
+            onClick={() => addToCart(menu)}
+          />
+          <Link to="/menuList" className="button-style btn btn-succes">
+            Back To List
+          </Link>
         </div>
       </div>
-      <div>
-        Category:
-        <select name="category" id="category" disabled>
-          <option>Japanese</option>
-          <option>Korean</option>
-          <option>Italian</option>
-        </select>
-      </div>
-      <div>Price: $20</div>
-      <div>
-        <a href="#" className="btn btn-danger btn-lg mr-2">
-          Order
-        </a>
-        <a href="#" className="btn btn-primary btn-lg ml-2">
-          Menu List
-        </a>
-      </div>
-    </div>
+    </section>
   );
 }
 

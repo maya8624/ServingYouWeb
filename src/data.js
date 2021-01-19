@@ -1,7 +1,10 @@
-import sushi from "./images/sushi2.jpg";
+import sushi from "./images/sushi-6.jpg";
 import ramen1 from "./images/ramen1.jpg";
 import ramen2 from "./images/ramen2.jpg";
 import mussels from "./images/grilled-mussels.jpg";
+import pizza from "./images/pizza-1.jpg";
+import spaghetti from "./images/spaghetti.jpg";
+import pasta from "./images/pasta.jpg";
 
 const menus = [
   {
@@ -10,46 +13,50 @@ const menus = [
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Japanese",
     price: 20,
+    special: false,
     image: {
       url: sushi,
     },
   },
   {
     id: 2,
-    name: "Sushi2",
+    name: "Fresh Sushi",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Japanese",
     price: 25,
+    special: true,
     image: {
       url: sushi,
     },
   },
   {
     id: 3,
-    name: "Sushi3",
+    name: "Yum Yum Pizza",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Italian",
+    special: true,
     price: 30,
     image: {
-      url: sushi,
+      url: pizza,
     },
   },
   {
     id: 4,
-    name: "Ramen1",
+    name: "Never Fail Spaghetti",
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Italian",
     price: 17,
+    special: true,
     image: {
-      url: ramen1,
+      url: spaghetti,
     },
   },
   {
@@ -58,8 +65,9 @@ const menus = [
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Japanese",
     price: 19,
+    special: false,
     image: {
       url: ramen2,
     },
@@ -70,8 +78,9 @@ const menus = [
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Japanese",
     price: 18,
+    special: true,
     image: {
       url: ramen2,
     },
@@ -82,8 +91,9 @@ const menus = [
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Italian",
     price: 26,
+    special: false,
     image: {
       url: mussels,
     },
@@ -94,10 +104,37 @@ const menus = [
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     status: true,
-    category: 1,
+    category: "Korean",
     price: 30,
+    special: false,
     image: {
       url: mussels,
+    },
+  },
+  {
+    id: 9,
+    name: "Pasta Salad",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    status: true,
+    category: "Italian",
+    price: 22,
+    special: true,
+    image: {
+      url: pasta,
+    },
+  },
+  {
+    id: 10,
+    name: "King Pizza Set",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    status: true,
+    category: "Italian",
+    price: 110,
+    special: true,
+    image: {
+      url: pasta,
     },
   },
 ];
