@@ -9,7 +9,6 @@ import Checkout from "./components/Checkout";
 import Home from "./pages/Home";
 import MenuDetails from "./components/MenuDetails";
 import Menus from "./components/Menus";
-//import NavBar from "./components/NavBar";
 import NavBar from "./components/NavBar";
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
