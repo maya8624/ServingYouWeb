@@ -29,7 +29,6 @@ export default function OrderProvider({ children }) {
   };
 
   const changeQuantity = (id, changeType) => {
-    // const items = orderService.getOrderItems();
     const items = JSON.parse(localStorage.getItem("order")) || [];
     const index = items.findIndex((item) => item.id === id);
     changeType === "increase"
