@@ -3,6 +3,13 @@ import {
   faUtensils,
   faCarrot,
   faSignal,
+  faPhone,
+  faMapMarker,
+  faPhoneSquare,
+  faEnvelopeOpen,
+  faGlobe,
+  faMapMarkerAlt,
+  faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 import Icon from "../components/common/Icon";
