@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 
 phases:
   install:
@@ -7,3 +7,21 @@ phases:
       - npm run build
       - aws s3 cp build s3://$S3_BUCKET --recursive --exclude 'index.html'
       - aws s3 cp build/index.html s3://$S3_BUCKET
+
+
+version: 0.2
+
+phases: 
+    install:    
+        commands:
+            - echo "Installing dependencies..."
+            - npm install           
+    pre_build:
+        commands: 
+            - echo "Pre build phase"
+    build:
+        commands:
+        - echo "Building..."
+        - npm run build
+        - aws s3 cp build s3://$S3_BUCKET --recursive         
+  
