@@ -5,7 +5,7 @@ import logo from "../images/logo.png";
 import AuthContext from "../context/authContext";
 import OrderInfo from "./OrderInfo";
 
-function NavBar2(props) {
+function NavBar(props) {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
 
@@ -95,4 +95,4 @@ function NavBar2(props) {
   );
 }
 
-export default NavBar2;
+export default NavBar;
