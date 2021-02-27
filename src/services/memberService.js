@@ -5,15 +5,12 @@ import funcs from "../utils/funcs";
 
 const awsEndPoint = `${awsApiUrl}/members`;
 const azEndPoint = `${azApiUrl}/members`;
-const localPoint = `${localUrl}/members`;
+//const localPoint = `${localUrl}/members`;
 
 export async function register(member) {
   try {
     // create an hasedPassword
     member.password = funcs.hashPassword(member.password);
-
-    // add an unique Id and add t o data
-    //const data = { ...member, id: uuidv4() };
 
     const azFormat = {
       firstname: member.firstName,
@@ -22,7 +19,7 @@ export async function register(member) {
       email: member.email,
     };
 
-    const res1 = await http.post(localPoint, azFormat);
+    const res1 = await http.post(azEndPoint, azFormat);
     let res2;
 
     if (res1.status === 201) {
