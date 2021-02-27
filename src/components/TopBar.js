@@ -7,15 +7,19 @@ import colors from "../config/colors";
 const TopBar = () => {
   return (
     <div className="top-bar">
-      <div className="text-right">
-        <div>
+      <div>
+        <span className="mr-2">
           <Icon color={colors.white} icon={faEnvelope} />
-          <a href="mailto:webmaster@example.com">servingyou@domain.com.au</a>
-        </div>
-        <div>
+        </span>
+        <span className="mr-2">
+          <a href="mailto:admin@servingyou.com">admin@weservingyou.com</a>
+        </span>
+        <span className="mr-2">
           <Icon color={colors.white} icon={faPhone} />
+        </span>
+        <span>
           <a href="tel:+1800 000 000">Call us at 1800</a>
-        </div>
+        </span>
       </div>
     </div>
   );

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import orderService from "../services/orderService";
-
 export const OrderContext = React.createContext();
+
+const orderToken = "order";
 
 export default function OrderProvider({ children }) {
   const [items, setItems] = useState([]);
 
   const addToCart = (item) => {
-    const items = JSON.parse(localStorage.getItem("order")) || [];
+    const items = JSON.parse(localStorage.getItem(orderToken)) || [];
     items.push(item);
 
     const newItems = items.reduce((accumulator, currentItem) => {

@@ -15,7 +15,6 @@ const validateData = (data, schema) => {
 };
 
 const validateProperty = (name, value, schema) => {
-  console.log(schema);
   var obj = { [name]: value };
   const newSchema = { [name]: schema[name] };
   const { error } = Joi.object(newSchema).validate(obj);
@@ -23,7 +22,9 @@ const validateProperty = (name, value, schema) => {
   return error === undefined ? null : error.details[0].message;
 };
 
-export default {
+const validate = {
   validateData,
   validateProperty,
 };
+
+export default validate;

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import Joi from "joi";
-import foodTruck from "../images/foodTruck.svg";
 
+import foodTruck from "../images/foodTruck.svg";
 import {
   faCalendar,
   faMobile,
@@ -9,19 +10,22 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
-import * as bookingservice from "../services/bookingService";
-import validate from "../utils/validate";
+import AuthContext from "../context/AuthContext";
 import FormInput from "./common/FormInput";
-import Select from "./common/Select";
+import FormSelect from "./common/FormSelect";
+import validate from "../utils/validate";
+import * as bookingService from "../services/bookingService";
 
-function BookingForm(props) {
+function BookingForm() {
+  const { user } = useContext(AuthContext);
+
   const schema = {
     firstname: Joi.string().required().min(2).label("Firstname"),
     lastname: Joi.string().required().min(2).label("Lastname"),
     mobile: Joi.number().required().min(10).label("Mobile"),
-    date: Joi.string().required().label("Date"),
-    time: Joi.string().required().label("Time"),
-    numberInParty: Joi.number()
+    dateBooked: Joi.string().required().label("Date"),
+    timeBooked: Joi.string().required().label("Time"),
+    numberinParty: Joi.number()
       .required()
       .min(1)
       .max(20)
@@ -32,18 +36,18 @@ function BookingForm(props) {
     firstname: "",
     lastname: "",
     mobile: "",
-    date: "",
-    time: "",
-    numberInParty: "",
+    dateBooked: "",
+    timeBooked: "18:00",
+    numberinParty: "",
   });
 
   const [errors, setErrors] = useState({
     firstname: "",
     lastname: "",
     mobile: "",
-    date: "",
-    time: "",
-    numberInParty: "",
+    dateBooked: "",
+    timeBooked: "",
+    numberinParty: "",
   });
 
   const handleChange = ({ currentTarget: input }) => {
@@ -75,23 +79,30 @@ function BookingForm(props) {
     setErrors(errorResult || {});
     if (errorResult) return;
 
-    doSubmit();
+    submit();
   };
 
-  const doSubmit = () => {
+  const submit = async () => {
     try {
-      const error = validate();
-      if (error) console.log(error);
+      data.dateBooked = new Date(
+        data.dateBooked.split("/").reverse().join("-")
+      ).toISOString();
+      data.numberinParty = parseInt(data.numberinParty);
 
-      //console.log(data);
-      console.log(bookingservice.saveBooking(data));
-    } catch (ex) {
-      console.log("error", ex);
+      const defaultValues = { method: 2, status: 0 };
+      const booking = { ...data, ...defaultValues };
+      console.log(booking);
+
+      await bookingService.saveBooking(booking).then(function (response) {
+        if (response.status === 201) window.location.href = "/bookingdetails";
+      });
+    } catch (error) {
+      console.log("error in booking", error);
     }
   };
 
   const getDates = () => {
-    const days = 10; // initial days
+    const days = 10; // default 10 days
     const dates = [];
     const dt = new Date();
 
@@ -108,10 +119,22 @@ function BookingForm(props) {
     return ["Select", ...dates];
   };
 
+  if (!user)
+    return (
+      <div className="my-form-container m-5">
+        <p>
+          <span>Please log in to use Booking Service.</span>
+        </p>
+        <p className="text-center">
+          <Link to="/login">Login</Link>
+        </p>
+      </div>
+    );
+
   return (
-    <div className="val-login-container">
-      <div className="val-div">
-        <form className="val-form" onSubmit={handleSubmit}>
+    <div className="my-form-container">
+      <div className="my-form-div">
+        <form className="my-form-form" onSubmit={handleSubmit}>
           <img className="form-foodTruck" src={foodTruck} alt="" />
           <FormInput
             name="firstname"
@@ -134,32 +157,32 @@ function BookingForm(props) {
           <FormInput
             name="mobile"
             title="Mobile"
+            error={errors.mobile}
             icon={faMobile}
             type="text"
             value={data.mobile}
-            error={errors.mobile}
             onChange={handleChange}
           />
-          <Select
-            name="date"
-            error={errors["date"]}
+          <FormSelect
+            name="dateBooked"
             icon={faCalendar}
             items={getDates()}
             onChange={handleChange}
             title="Date"
-            value={data.date}
+            error={errors.dateBooked}
+            value={data.dateBooked}
           />
           <FormInput
-            name="numberInParty"
+            name="numberinParty"
             title="Number In Party"
             icon={faUserPlus}
-            type="text"
-            value={data.numberInParty}
-            error={errors.numberInParty}
+            type="number"
+            value={data.numberinParty}
+            error={errors.numberinParty}
             onChange={handleChange}
           />
 
-          <input type="submit" className="val-btn" value="Booking" />
+          <input type="submit" className="my-form-btn" value="Booking" />
         </form>
       </div>
     </div>

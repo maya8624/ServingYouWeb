@@ -1,21 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
+import AuthContext from "../context/AuthContext";
+import Cart from "./Cart";
 import logo from "../images/logo.png";
-import AuthContext from "../context/authContext";
-import OrderInfo from "./OrderInfo";
 
 function NavBar(props) {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-
-  // const handleToggle = () => {
-  //   setOpen(open ? false : true);
-  // };
-  // in useEffect ?
-  // useEffect(() => {
-  //   handleToggle();
-  // }, []); <= puth sth change thing
 
   return (
     <nav className="navbar bg-light navbar-light navbar-expand-lg sticky-top">
@@ -42,13 +34,13 @@ function NavBar(props) {
                 Home
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/about" className="nav-link">
                 About
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
-              <Link to="/menuList" className="nav-link">
+              <Link to="/menus" className="nav-link">
                 Menu
               </Link>
             </li>
@@ -57,11 +49,11 @@ function NavBar(props) {
                 Booking
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="contact" className="nav-link">
                 Contact
               </Link>
-            </li>
+            </li> */}
             {!user && (
               <>
                 <li className="nav-item">
@@ -85,7 +77,7 @@ function NavBar(props) {
             )}
             <li className="cart-icon">
               <Link to="/order" className="nav-link">
-                <OrderInfo />
+                <Cart />
               </Link>
             </li>
           </ul>

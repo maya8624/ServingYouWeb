@@ -1,38 +1,44 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useOrder } from "../components/hooks/useOrder";
-import { getMenus } from "../services/menuService";
+import { bucketImgUrl } from "../config.json";
 
+import Image from "./common/Image";
 import Input from "./common/Input";
-import Select from "./common/Select";
+import Loading from "./common/Loading";
+import MenuFilter from "./MenuFilter";
+import menuService from "../services/menuService";
+import { useOrder } from "../components/hooks/useOrder";
 
 function Menus(props) {
-  const [menus, setMenus] = useState([]);
-  const [filteredMenus, setFilteredMenus] = useState([]);
-  const [price, setPrice] = useState(0);
   const order = useOrder();
+  const [menus, setMenus] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filteredMenus, setFilteredMenus] = useState([]);
 
-  let filters = {
-    category: "All",
-    price: 0,
-    special: false,
-  };
-  console.log("render");
+  const filterRef = useRef({ category: "All", price: 0, special: false });
 
   useEffect(() => {
-    const result = getMenus();
-    setMenus(result);
-    setFilteredMenus(result);
+    async function getMenus() {
+      try {
+        const result = await menuService.getMenus();
+        setMenus(result);
+        setFilteredMenus(result);
+        setLoading(false);
+      } catch (error) {
+        console.log(`An error has occured: ${error}`);
+      }
+    }
+    getMenus();
   }, []);
 
   const minPrice = 0;
   const maxPrice = getMaxPrice();
 
   function getMaxPrice() {
-    return Math.max(...menus.map((menu) => menu.price));
+    return Math.max(...menus.map((menu) => menu.Price));
   }
 
-  let categories = getUniqueValues("category");
+  let categories = getUniqueValues("Category");
   categories = ["All", ...categories];
 
   function getUniqueValues(value) {
@@ -41,11 +47,11 @@ function Menus(props) {
 
   const addToCart = (menu) => {
     const item = {
-      id: menu.id,
-      name: menu.name,
-      price: menu.price,
+      id: menu.MenuId,
+      name: menu.MenuName,
+      price: menu.Price,
       quantity: 1,
-      imageUrl: menu.image.url,
+      image: menu.Image,
     };
 
     order.addToCart(item);
@@ -56,98 +62,75 @@ function Menus(props) {
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
-    filters = { ...filters, [name]: value };
-    setPrice(filters.price);
+    filterRef.current = { ...filterRef.current, [name]: value };
 
     filterMenus();
   };
 
   function filterMenus() {
     let sortedMenus = [...menus];
+    const filters = filterRef.current;
 
     // filter by category
     if (filters.category !== "All") {
-      sortedMenus = sortedMenus.filter((m) => m.category === filters.category);
+      sortedMenus = sortedMenus.filter((m) => m.Category === filters.category);
     }
-
-    // filter by price
-    sortedMenus = sortedMenus.filter((m) => m.price >= filters.price);
 
     // filter by special
     if (filters.special) {
-      sortedMenus = sortedMenus.filter((m) => m.special === filters.special);
+      sortedMenus = sortedMenus.filter((m) => m.Special === filters.special);
     }
 
+    // filter by price
+    sortedMenus = sortedMenus.filter((m) => m.Price >= filters.price);
+
+    // set menus filtered
     setFilteredMenus(sortedMenus);
   }
 
+  if (loading) return <Loading />;
+
   return (
     <div className="container">
-      <section className="filter-container">
-        <h4>Search Menu</h4>
-        <div>
-          <Select
-            items={categories}
-            name="category"
-            title="Category"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="price">
-            Menu Price ${price === 0 ? maxPrice : price}
-          </label>
-          <Input
-            className="form-control"
-            id="price"
-            name="price"
-            type="range"
-            min={minPrice}
-            max={maxPrice}
-            value={price === 0 ? maxPrice : price}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <Input
-            id="special"
-            name="special"
-            title="Special"
-            type="checkbox"
-            onChange={handleChange}
-          />
-          <label htmlFor="special">Special</label>
-        </div>
-      </section>
-
+      <MenuFilter
+        categories={categories}
+        price={filterRef.current.price}
+        maxPrice={maxPrice}
+        minPrice={minPrice}
+        handleChange={handleChange}
+      />
       <div className="section-center">
         {filteredMenus.map((menu) => {
           return (
-            <article key={menu.id} className="menu-item">
-              <img src={menu.image.url} alt={menu.name} className="photo" />
+            <div key={menu.MenuId} className="menu-item">
+              <Image
+                src={`${bucketImgUrl}/${menu.Image}`}
+                alt={menu.MenuName}
+                className="photo"
+              />
               <div className="item-info">
                 <header>
-                  <h4>{menu.name}</h4>
-                  <h4 className="price">$ {menu.price}</h4>
+                  <h4>{menu.MenuName}</h4>
+                  <h4 className="price">$ {menu.Price}</h4>
                 </header>
                 <p className="item-text">
-                  {menu.description.slice(0, 60)}......
+                  {menu.Description.slice(0, 60)}......
                 </p>
-                <input
+                <Input
+                  id="add"
                   type="button"
                   value="Add"
-                  className="btn btn-outline-dark btn m-1"
+                  className="menu-btn-primary mr-2"
                   onClick={() => addToCart(menu)}
                 />
-
                 <Link
-                  to={`/menuDetails/${menu.id}`}
-                  className="btn btn-outline-dark btn m-1"
+                  to={`/menuDetails/${menu.MenuId}`}
+                  className="menu-btn-primary"
                 >
                   View
                 </Link>
               </div>
-            </article>
+            </div>
           );
         })}
       </div>

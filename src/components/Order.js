@@ -1,19 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
+import AuthoContext from "../context/AuthContext";
+import { bucketImgUrl } from "../config.json";
+import Input from "./common/Input";
 import orderService from "../services/orderService";
+import Table from "./common/Table";
+import useAuth from "./hooks/useAuth";
 import { useOrder } from "./hooks/useOrder";
-import Icon from "./common/Icon";
-import { Link } from "react-router-dom";
 
 function Order() {
   const order = useOrder();
   const [items, setItems] = useState([]);
+  const { user } = useAuth(AuthoContext);
 
   useEffect(() => {
     const items = orderService.getOrderItems();
     setItems(items);
   }, []);
+
+  const columns = [
+    { label: "#", path: "index" },
+    {
+      label: "Menu",
+      path: "image",
+      className: "order-img-thumbnail quantity-img",
+      content: (item) => `${bucketImgUrl}/${item.image}`,
+    },
+    { label: "Name", path: "name" },
+    {
+      label: "Quantity",
+      path: "quantity",
+      content: (item) => (
+        <div className="quantity-container">
+          <div>
+            <Input
+              className="quantity-btn"
+              disabled={item.quantity === 1 ? true : false}
+              type="button"
+              onClick={() => changeQuantity(item.id, "decrease")}
+              value="&#8722;"
+            />
+          </div>
+          <div className="quantity">{item.quantity}</div>
+          <div>
+            <Input
+              className="quantity-btn"
+              onClick={() => changeQuantity(item.id, "increase")}
+              type="button"
+              value="&#43;"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "Price",
+      path: "price",
+      content: (item) => formatPrice(item.price),
+    },
+    {
+      label: "Subtotal",
+      path: "subtotal",
+      content: (item) => formatPrice(item.quantity * item.price),
+    },
+    {
+      label: "Remove",
+      path: "remove",
+      content: (item) => (
+        <FontAwesomeIcon
+          icon={faTrashAlt}
+          size="2x"
+          style={{ cursor: "pointer" }}
+          onClick={() => removeFromCart(item.id)}
+        />
+      ),
+    },
+  ];
 
   const changeQuantity = (id, changeType) => {
     const newItems = order.changeQuantity(id, changeType.toLowerCase());
@@ -22,6 +86,28 @@ function Order() {
 
   const formatPrice = (price) => {
     return `$${price.toFixed(2)}`;
+  };
+
+  const placeAnOrder = async () => {
+    const data = {
+      orderDate: new Date(),
+      orderStatus: 0, // 0:confirmed
+      orderMethod: 0, // 0:web
+      orderTotal: totalPrice(items),
+      email: user,
+      orderMenus: items.map((item) => {
+        return { menuId: item.id, price: item.price, quantity: item.quantity };
+      }),
+    };
+
+    const result = await orderService.placeAnOrder(data);
+    console.log("result", result.status);
+
+    if (result.status === 201) {
+      alert("Your order is confirmed.");
+      orderService.removeAllItems();
+      window.location = "/";
+    }
   };
 
   const removeFromCart = (id) => {
@@ -33,176 +119,29 @@ function Order() {
     return items.reduce((acc, item) => acc + item.quantity * item.price, 0.0);
   };
 
-  const getDates = () => {
-    const days = 10; // initial days
-    const dates = [];
-    const dt = new Date();
-
-    for (let i = 1; i <= days; i++) {
-      dt.setDate(dt.getDate() + 1);
-
-      let dd = dt.getDate();
-      let mm = dt.getMonth() + 1;
-      let yyyy = dt.getFullYear();
-
-      dates.push(`${dd}/${mm}/${yyyy}`);
-    }
-
-    return dates;
-  };
-
-  const getTimes = (year, month, day) => {
-    const times = [];
-    const start = new Date();
-
-    start.setFullYear(year);
-    start.setMonth(month);
-    start.setDate(day);
-
-    // start hour: 12
-    let startHour = 12;
-    let startMin = "30";
-
-    const startDate = `${year}${month}${day}`;
-
-    // current date
-    const current = new Date();
-    const currentYear = current.getFullYear();
-    const currentMonth = current.getMonth() + 1;
-    const currentDay = current.getDate();
-    const currentHour = current.getHours();
-    const currentDate = `${currentYear}${currentMonth}${currentDay}`;
-
-    // endTime 20:30
-    const endHour = 20;
-    const interval = 30;
-
-    // food preparing time: 30 min
-    const preparingTime = 30;
-
-    const isToday = startDate > currentDate ? false : true;
-
-    if (isToday) {
-      if (currentHour >= endHour) {
-        console.log("closed");
-        return null;
-      }
-
-      current.setMinutes(current.getMinutes() + preparingTime);
-      startMin = current.getMinutes();
-      startHour = current.getHours();
-    }
-
-    for (let i = startHour; i <= endHour; i++) {
-      times.push(`${i}:${isToday ? pickUpTime : startMin}`);
-
-      for (let j = 1; j < 2; j++) {
-        current.setHours(i, interval);
-        times.push(`${i}:${j * interval}`);
-      }
-    }
-
-    const pickUpTime = startMin > interval ? "00" : "30";
-
-    if (isToday) {
-      if (pickUpTime === "00") return times.slice(2);
-      else return times.slice(1);
-    } else return times;
-  };
-
-  if (items.length === 0) return <span>Some Shopping</span>;
-  // if (!user) window.location = "/";
+  if (items.length === 0)
+    return (
+      <div className="container">
+        <span></span>
+      </div>
+    );
 
   return (
-    <div className="container">
-      <div className="order-container">
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Menu</th>
-              <th scope="col">Name</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
-              <th scope="col">Subtotal</th>
-              <th scope="col">Remove</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <div>
-                      <img
-                        alt=""
-                        className="img-thumbnail quantity-img"
-                        src={item.imageUrl}
-                      />
-                    </div>
-                  </td>
-                  <td>{item.name}</td>
-                  <td>
-                    <div className="quantity-container">
-                      <div>
-                        <input
-                          disabled={item.quantity === 1 ? true : false}
-                          type="button"
-                          className="quantity-btn"
-                          onClick={() => changeQuantity(item.id, "decrease")}
-                          value="&#8722;"
-                        />
-                      </div>
-                      <div className="quantity">{item.quantity}</div>
-                      <div>
-                        <input
-                          type="button"
-                          className="quantity-btn"
-                          onClick={() => changeQuantity(item.id, "increase")}
-                          value="&#43;"
-                        />{" "}
-                      </div>
-                    </div>
-                  </td>
-                  <td>{formatPrice(item.price)}</td>
-                  <td>{formatPrice(item.quantity * item.price)}</td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      size="2x"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => removeFromCart(item.id)}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        {/* <div>
-        <select>
-          {getDates().map((item) => {
-            return <option value={item}>{item}</option>;
-          })}
-        </select>
+    <div className="container mt-5">
+      <Table className="table table-hover" columns={columns} items={items} />
+      <div className="order-total">
+        <h5>Total: {formatPrice(totalPrice(items))}</h5>
       </div>
-      <div>
-        <select>
-          {getTimes().map((item) => {
-            return <option value={item}>{item}</option>;
-          })}
-        </select>
-      </div> */}
-        <div className="order-total">
-          <h5>Total: {formatPrice(totalPrice(items))}</h5>
-        </div>
-        <div className="checkout-container">
-          <Link className="checkout-btn" to={"/checkout"}>
+      <div className="checkout-container">
+        <Input
+          className="checkout-btn"
+          onClick={() => placeAnOrder()}
+          type="button"
+          value="Place Your Order"
+        />
+        {/* <Link className="checkout-btn" to={"/checkout"}>
             Proceed To Checkout
-          </Link>
-        </div>
+          </Link> */}
       </div>
     </div>
   );

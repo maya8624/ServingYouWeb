@@ -1,16 +1,19 @@
 import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Joi from "joi";
+import foodTruck from "../images/foodTruck.svg";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+
 import FormInput from "./common/FormInput";
-import validate from "../utils/validate";
 import authService from "../services/authService";
+import validate from "../utils/validate";
 import useAuth from "./hooks/useAuth";
 
-import Joi from "joi";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import wave from "../images/wave.svg";
-import foodTruck from "../images/foodTruck.svg";
-import account from "../images/account.svg";
-
 function LoginForm(props) {
+  const auth = useAuth();
+  const history = useHistory();
+  const [loginFailed, setLoginFailed] = useState(false);
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -33,7 +36,7 @@ function LoginForm(props) {
       .required()
       .min(3)
       .label("Password")
-      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/)
+      //.regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/)
       .messages({
         "string.pattern.base": "Invalid passsword format.",
       }),
@@ -68,73 +71,66 @@ function LoginForm(props) {
     setError(errors || {});
     if (errors) return;
 
-    doSubmit();
+    logIn();
   };
 
-  // const logIn = (authToken) => {
-  //   const user = authToken; //jwtDecode(authToken);
-  //   setUser(user);
-  //   authService.storeToken(authToken);
-  // };
-
-  const doSubmit = () => {
+  const logIn = async () => {
     try {
-      const result = authService.logIn(data.email, data.password);
+      const result = await authService.logIn(
+        data.email.trim(),
+        data.password.trim()
+      );
 
-      if (!result) return setLoginFailed(true);
+      if (!result) {
+        return setLoginFailed(true);
+      }
+
       setLoginFailed(false);
 
-      // store user info in to local storage
+      // setUser() in context
+      // temporarily:  jwt token will get from a server
+      auth.logIn(result.email);
 
-      auth.logIn(result.email + "jwt123"); // jwt token
-
-      // console.log(props);
-
-      // const { state } = props.location;
-      // window.location = state ? state.from.pathname : "/";
-
-      window.location = "/";
-
-      console.log("result", result);
-    } catch (ex) {
-      console.log(ex);
+      // return to the previous page
+      history.goBack();
+    } catch (error) {
+      console.log("Unable to add a user.", error);
     }
   };
-  const auth = useAuth();
-  const [loginFailed, setLoginFailed] = useState(false);
 
   return (
-    // <img src={wave} alt="" className="form-wave" />
-    <div className="val-login-container">
-      <div className="val-div">
-        <form className="val-form" onSubmit={handleSubmit}>
-          <img className="form-foodTruck" src={foodTruck} alt="" />
-          <h2>Log-in</h2>
-          <FormInput
-            name="email"
-            error={error.email}
-            icon={faEnvelope}
-            onChange={handleChange}
-            title="Email"
-            type="text"
-            value={data.email}
-          />
-          <FormInput
-            name="password"
-            error={error.password}
-            icon={faLock}
-            onChange={handleChange}
-            title="Password"
-            type="password"
-            value={data.password}
-          />
-          <input type="submit" className="val-btn" value="Login" />
-          <a href="#">Forgot Password?</a>
-        </form>
-
-        {loginFailed && <h2>email or password is not correct</h2>}
+    <>
+      <div className="my-form-container">
+        <div className="my-form-div">
+          <form className="my-form" onSubmit={handleSubmit}>
+            <img className="form-foodTruck" src={foodTruck} alt="" />
+            <h2>Log-in</h2>
+            <FormInput
+              name="email"
+              error={error.email}
+              icon={faEnvelope}
+              onChange={handleChange}
+              title="Email"
+              type="text"
+              value={data.email}
+            />
+            <FormInput
+              name="password"
+              error={error.password}
+              icon={faLock}
+              onChange={handleChange}
+              title="Password"
+              type="password"
+              value={data.password}
+            />
+            <input type="submit" className="my-form-btn" value="Login" />
+            {/* <a href="#">Forgot Password?</a> */}
+            <Link to="/register">Register</Link>
+          </form>
+        </div>
       </div>
-    </div>
+      <div>{loginFailed && <h5>email or password is invalid</h5>}</div>
+    </>
   );
 }
 

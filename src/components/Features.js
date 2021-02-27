@@ -3,13 +3,6 @@ import {
   faUtensils,
   faCarrot,
   faSignal,
-  faPhone,
-  faMapMarker,
-  faPhoneSquare,
-  faEnvelopeOpen,
-  faGlobe,
-  faMapMarkerAlt,
-  faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 import Icon from "../components/common/Icon";
@@ -23,9 +16,7 @@ const Features = ({ items }) => {
           <span>
             <Icon color={colors.orange} icon={faUtensils} />
           </span>
-          <h5>
-            <a href="/MenuList">Order Online</a>
-          </h5>
+          <h5>Order Online</h5>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
             accusantium deserunt nostrum dolorem non optio porro sequi harum
@@ -36,9 +27,7 @@ const Features = ({ items }) => {
           <span>
             <Icon color={colors.orange} icon={faCarrot} />
           </span>
-          <h5>
-            <a href="">Fresh Ingredients</a>
-          </h5>
+          <h5>Fresh Ingredients</h5>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
             accusantium deserunt nostrum dolorem non optio porro sequi harum
@@ -49,9 +38,7 @@ const Features = ({ items }) => {
           <span>
             <Icon color={colors.orange} icon={faSignal} />
           </span>
-          <h5>
-            <a href="/booking">Online Booking</a>
-          </h5>
+          <h5>Online Booking</h5>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
             accusantium deserunt nostrum dolorem non optio porro sequi harum

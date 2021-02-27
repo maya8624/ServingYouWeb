@@ -1,7 +1,7 @@
 import React from "react";
 
-const Checkout = () => {
+function About(props) {
   return <div>Coming Soon...</div>;
-};
+}
 
-export default Checkout;
+export default About;

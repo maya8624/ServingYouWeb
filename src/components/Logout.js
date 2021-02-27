@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import orderService from "../services/orderService";
 import useAuth from "./hooks/useAuth";
-import authService from "../services/authService";
 
 function Logout(props) {
-  useAuth().logOut();
-  window.location = "/";
+  const auth = useAuth();
 
-  // useEffect(() => {
-
-  // }, []);
+  useEffect(() => {
+    auth.logOut();
+    orderService.removeAllItems();
+    window.location = "/";
+  });
 
   return null;
 }

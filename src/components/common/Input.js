@@ -1,18 +1,32 @@
 import React from "react";
 
-const Input = ({ id, name, min, max, onChange, type, value }) => {
+const Input = ({
+  checked,
+  className,
+  disabled,
+  id,
+  min,
+  max,
+  name,
+  onChange,
+  onClick,
+  type,
+  value,
+}) => {
   return (
-    <div className="form-group">
-      <input
-        type={type}
-        name={name}
-        id={id}
-        min={min}
-        max={max}
-        value={value}
-        onChange={onChange}
-      />
-    </div>
+    <input
+      checked={checked}
+      className={className}
+      disabled={disabled}
+      id={id}
+      max={max}
+      min={min}
+      name={name}
+      onClick={onClick}
+      onChange={onChange}
+      type={type}
+      value={value}
+    />
   );
 };
 

@@ -1,59 +1,79 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getMenu } from "../services/menuService";
+import { bucketImgUrl } from "../config.json";
+
+import Image from "./common/Image";
+import Input from "./common/Input";
+import Loading from "./common/Loading";
+import menuService from "../services/menuService";
 import { useOrder } from "../components/hooks/useOrder";
 
 function MenuDetails(props) {
-  //const [menu, setMenu] = useState([]);
   const order = useOrder();
+  const [menu, setMenu] = useState({});
+  const [imgSrc, setImgeSrc] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const id = props.match.params.id;
-  const menu = getMenu(parseInt(id));
 
   const addToCart = (menu) => {
     const item = {
-      id: menu.id,
-      name: menu.name,
-      price: menu.price,
+      id: menu.MenuId,
+      name: menu.MenuName,
+      price: menu.Price,
       quantity: 1,
-      imageUrl: menu.image.url,
+      image: menu.Image,
     };
 
     order.addToCart(item);
   };
 
-  // useEffect(() => {
-  //   setMenu(getMenu(parseInt(id)));
-  // }, [id]);
+  useEffect(() => {
+    async function getMenu() {
+      try {
+        const result = await menuService.getMenu(parseInt(id));
+        setMenu(result);
+        setImgeSrc(`${bucketImgUrl}/${result.Image}`);
+        setLoading(false);
+      } catch (error) {
+        console.log("Unable to get menu.", error);
+      }
+    }
+    getMenu();
+  }, [id]);
 
+  if (loading) return <Loading />;
   return (
-    <section className="menu-details-container">
+    <div className="menu-details-container">
       <div className="menu-details-image">
-        <img src={menu.image.url} alt={menu.id} />
+        <Image src={imgSrc} alt={menu.MenuName} className="detail-photo" />
       </div>
       <div className="menu-info-container">
         <div className="menu-details-desc">
           <h3>Description</h3>
-          <p>{menu.description}</p>
+          <p>{menu.Description}</p>
         </div>
         <div className="menu-details-info">
           <h3>Info</h3>
-          <h6>Name: {menu.name}</h6>
-          <h6>Price: ${menu.price}</h6>
-          <h6>Category:Italian</h6>
+          <h6>Name: {menu.MenuName}</h6>
+          <h6>Price: ${menu.Price}</h6>
+          <h6>Category: {menu.Category}</h6>
         </div>
         <div className="menu-details-buttons">
-          <input
+          <Input
             type="button"
+            id="add"
+            name="add"
             value="Add To Cart"
+            className="menu-details-btn-add menu-info mr-2"
             onClick={() => addToCart(menu)}
           />
-          <Link to="/menuList" className="button-style btn btn-succes">
+          <Link to="/menus" className="menu-details-btn-add menu-info">
             Back To List
           </Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

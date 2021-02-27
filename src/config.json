@@ -1,0 +1,6 @@
+{
+  "awsApiUrl": "https://api.weservingyou.com/prod",
+  "azApiUrl": "https://servingyouadminapi.azurewebsites.net/api",
+  "localUrl": "https://localhost:44348/api",
+  "bucketImgUrl": "https://servingyou.s3-ap-southeast-2.amazonaws.com/static/media"
+}

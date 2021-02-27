@@ -7,4 +7,5 @@ const Header = ({ children, defaultStyle }) => {
 Header.defaultProps = {
   defaultStyle: "defaultBanner",
 };
+
 export default Header;

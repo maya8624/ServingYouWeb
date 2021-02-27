@@ -15,30 +15,29 @@ const Footer = () => {
       <div className="footer">
         <div className="row text-light text-center py-4 justify-content-center">
           <div className="col-sm-10 col-md-8 col-lg-6">
-            <img src="img/logo-white.png" alt="" />
-            <p>
+            <p className="pt-5">
               Contrary to popular belief, Lorem Ipsum is not simply random text.
               It has roots in a piece of classical Latin literature from 45 BC,
               making it over 2000 years old.
             </p>
             <ul className="social pt-3">
               <li>
-                <a href="" target="_blank">
+                <a href="/">
                   <Icon color={colors.white} icon={faFacebookSquare} />
                 </a>
               </li>
               <li>
-                <a href="" target="_blank">
+                <a href="/" target="_self">
                   <Icon color={colors.white} icon={faTwitterSquare} />
                 </a>
               </li>
               <li>
-                <a href="" target="_blank">
+                <a href="/">
                   <Icon color={colors.white} icon={faInstagramSquare} />
                 </a>
               </li>
               <li>
-                <a href="" target="_blank">
+                <a href="/">
                   <Icon color={colors.white} icon={faYoutubeSquare} />
                 </a>
               </li>
@@ -47,7 +46,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="socket-container">
-        <div>© Copyright 2020 Serving You</div>
+        <div>© Copyright 2021 Serving You</div>
         <div>|</div>
         <div>
           <a href="/">Privacy Policy</a>

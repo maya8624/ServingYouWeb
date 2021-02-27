@@ -3,7 +3,7 @@ import { useOrder } from "./hooks/useOrder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
-function OrderInfo() {
+function Cart() {
   const order = useOrder();
   const totalItems = order.items.length;
 
@@ -16,4 +16,4 @@ function OrderInfo() {
   );
 }
 
-export default OrderInfo;
+export default Cart;

@@ -5,7 +5,7 @@ import Icon from "./Icon";
 const FormInput = ({ name, error, icon, onChange, title, type, value }) => {
   return (
     <>
-      <div className="val-input">
+      <div className="my-form-input">
         <Icon icon={icon} />
         <h6>{title}</h6>
         <input
