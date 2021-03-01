@@ -96,12 +96,15 @@ function Order() {
       orderTotal: totalPrice(items),
       email: user,
       orderMenus: items.map((item) => {
-        return { menuId: item.id, price: item.price, quantity: item.quantity };
+        return {
+          menuId: parseInt(item.id),
+          price: item.price,
+          quantity: item.quantity,
+        };
       }),
     };
 
     const result = await orderService.placeAnOrder(data);
-    console.log("result", result.status);
 
     if (result.status === 201) {
       alert("Your order is confirmed.");

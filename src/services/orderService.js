@@ -12,7 +12,6 @@ const getOrderItems = () => {
 const placeAnOrder = async (order) => {
   try {
     const response = await http.post(apiEndPoint, order);
-    console.log("response", response);
     return response;
   } catch (error) {
     console.log("Unable to post order.", error);
