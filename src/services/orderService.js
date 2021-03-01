@@ -1,9 +1,8 @@
 import http from "./httpService";
-import { azApiUrl, localUrl } from "../config.json";
+import { azApiUrl } from "../config.json";
 
 const orderToken = "order";
 const apiEndPoint = `${azApiUrl}/orders`;
-//const localEndPoint = `${localUrl}/orders`;
 
 const getOrderItems = () => {
   const items = JSON.parse(localStorage.getItem(orderToken)) || [];

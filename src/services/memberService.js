@@ -1,10 +1,9 @@
 import http from "./httpService";
-import { localUrl, azApiUrl, awsApiUrl } from "../config.json";
+import { azApiUrl, awsApiUrl } from "../config.json";
 import funcs from "../utils/funcs";
 
 const awsEndPoint = `${awsApiUrl}/members`;
 const azEndPoint = `${azApiUrl}/members`;
-//const localPoint = `${localUrl}/members`;
 
 export async function register(member) {
   try {

@@ -119,12 +119,7 @@ function Order() {
     return items.reduce((acc, item) => acc + item.quantity * item.price, 0.0);
   };
 
-  if (items.length === 0)
-    return (
-      <div className="container">
-        <span>No Items.</span>
-      </div>
-    );
+  if (items.length === 0) return <div className="container"></div>;
 
   return (
     <div className="container mt-5">
