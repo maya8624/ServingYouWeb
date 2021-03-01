@@ -96,6 +96,7 @@ function RegisterForm() {
 
       // check the email already exists
       const member = await memberService.getMember(data.email);
+
       if (member) {
         setLoading(false);
         alert("The same email already exists.");
@@ -114,7 +115,7 @@ function RegisterForm() {
         const authData = {
           emai: data.email,
           firstName: data.firstName,
-        };
+        };  
 
         auth.logIn(authData.email);
 

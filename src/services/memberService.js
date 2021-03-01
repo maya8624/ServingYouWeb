@@ -1,7 +1,6 @@
 import http from "./httpService";
 import { localUrl, azApiUrl, awsApiUrl } from "../config.json";
 import funcs from "../utils/funcs";
-// import { v4 as uuidv4 } from "uuid";
 
 const awsEndPoint = `${awsApiUrl}/members`;
 const azEndPoint = `${azApiUrl}/members`;
@@ -19,13 +18,13 @@ export async function register(member) {
       email: member.email,
     };
 
-    const res1 = await http.post(azEndPoint, azFormat);
-    let res2;
+    const azResponse = await http.post(azEndPoint, azFormat);
+    let awsResponse;
 
-    if (res1.status === 201) {
-      const res2 = http.post(awsEndPoint, member);
+    if (azResponse.status === 201) {
+      awsResponse = await http.post(awsEndPoint, member);
     }
-    return res2;
+    return awsResponse;
   } catch (error) {
     console.log("Unable to create a member", error);
   }

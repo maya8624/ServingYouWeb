@@ -122,7 +122,7 @@ function Order() {
   if (items.length === 0)
     return (
       <div className="container">
-        <span></span>
+        <span>No Items.</span>
       </div>
     );
 
